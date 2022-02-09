@@ -1,0 +1,29 @@
+import numpy as np
+class binary_underlying():
+  def __init__(self,vol,maturity,spot,coupon,N,r,barrier):
+    self.sigma = vol
+    self.S0 = spot
+    self.T=maturity
+    self.c= coupon
+    self.r=r
+    self.barrier = barrier
+    self.N=N
+
+def pricing_binary(object):
+
+  L=np.array([object.S0*np.exp((object.r-0.5*object.sigma**2)*object.T+object.sigma*np.sqrt(object.T)*np.random.normal(0,1,object.N))])
+  
+  return np.exp(-object.r*object.T)*object.c*np.sum(L>object.barrier)/object.N
+
+
+sigma = 0.10
+T=5
+coupon = 1
+barrier = 100
+spot = 100
+N=2500
+r=0.05
+
+
+profile = binary_underlying(sigma,T,spot,coupon,N,r,barrier)
+print("The price of the option is " + str(pricing_binary(profile)))
